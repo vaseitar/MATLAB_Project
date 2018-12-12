@@ -128,60 +128,121 @@ b = m(:,:,3);
 
 % find and remove what isn't green
 notgreen = find(not(g>b & g>r & g-r>b));
-temp = m;
-temp(notgreen) = 252;
-temp(notgreen+x*y/3) = 252;
-temp(notgreen+2*x*y/3) = 252;
-figure
-imshow(temp);
-title('Green Bear');
+GreenPic = m;
+GreenPic(notgreen) = 252;
+GreenPic(notgreen+x*y/3) = 252;
+GreenPic(notgreen+2*x*y/3) = 252;
 
 % find and remove what isn't red
-notred = find(not(r>b & r>g & g-b<b & g<=b & g+b<r));
-temp = m;
-temp(notred) = 252;
-temp(notred+x*y/3) = 252;
-temp(notred+2*x*y/3) = 252;
-figure
-imshow(temp);
-title('Red Bear');
+notred = find(not(r>b & r>g & g-b<b & g-b<b & r-g-b>g));
+RedPic = m;
+RedPic(notred) = 252;
+RedPic(notred+x*y/3) = 252;
+RedPic(notred+2*x*y/3) = 252;
 
 % find and remove what isn't orange
 notorange = find(not(r>b & r>g & g>b & g-b<r-g & b+g<r & r-g>g));
-temp = m;
-temp(notorange) = 252;
-temp(notorange+x*y/3) = 252;
-temp(notorange+2*x*y/3) = 252;
-figure
-imshow(temp);
-title('Orange Bear');
+OrangePic = m;
+OrangePic(notorange) = 252;
+OrangePic(notorange+x*y/3) = 252;
+OrangePic(notorange+2*x*y/3) = 252;
 
 % find and remove what isn't yellow
 notyellow = find(not(r>b & g>b & g-b>=r-g & r-g<r & g-b<r & r-b>b));
-temp = m;
-temp(notyellow) = 252;
-temp(notyellow+x*y/3) = 252;
-temp(notyellow+2*x*y/3) = 252;
-figure
-imshow(temp);
-title('Yellow Bear');
+YellowPic = m;
+YellowPic(notyellow) = 252;
+YellowPic(notyellow+x*y/3) = 252;
+YellowPic(notyellow+2*x*y/3) = 252;
 
 % find and remove what isn't blue
-notblue = find(not(g>r & b>r & abs(b-r) > abs(g-r)));
-temp = m;
-temp(notblue) = 252;
-temp(notblue+x*y/3) = 252;
-temp(notblue+2*x*y/3) = 252;
-figure
-imshow(temp);
-title('Blue Bear');
+notblue = find(not(g>r & b>r & g<b & g-r<b & b-r>r));
+BluePic = m;
+BluePic(notblue) = 252;
+BluePic(notblue+x*y/3) = 252;
+BluePic(notblue+2*x*y/3) = 252;
 
 % find and remove what isn't brown
-notbrown = find(not(r>b & r>g & g-b<b));
+notbrown = find(not(b+g>r & b+r>g & g+r>b & g-b<b & r>b & r-g<g & r>g));
+BrownPic = m;
+BrownPic(notbrown) = 252;
+BrownPic(notbrown+x*y/3) = 252;
+BrownPic(notbrown+2*x*y/3) = 252;
+
+
+%% Counts
+% Green: 155
+% Red: 90
+% Orange: 114
+% Yellow: 147
+% Blue: 144
+% Brown: 113
+
+Factor=914;
+SizePic = size(m);
+PixelCount = SizePic(1)*SizePic(2);
+
+greenCountPixels = PixelCount - length(notgreen);
+greenCount = greenCountPixels/PixelCount*Factor;
+
+redCountPixels = PixelCount - length(notred);
+redCount = redCountPixels/PixelCount*Factor;
+
+orangeCountPixels = PixelCount - length(notorange);
+orangeCount = orangeCountPixels/PixelCount*Factor;
+
+yellowCountPixels = PixelCount - length(notyellow);
+yellowCount = yellowCountPixels/PixelCount*Factor;
+
+blueCountPixels = PixelCount - length(notblue);
+blueCount = blueCountPixels/PixelCount*Factor;
+
+brownCountPixels = PixelCount - length(notbrown);
+brownCount = brownCountPixels/PixelCount*Factor;
+%% All filters at once
+countColor = find(not((g>b & g>r & g-r>b)|(r>b & r>g & g-b<b & g-b<b & r-g-b>g)|(r>b & r>g & g>b & g-b<r-g & b+g<r & r-g>g)|(r>b & g>b & g-b>=r-g & r-g<r & g-b<r & r-b>b)|(g>r & b>r & g<b & g-r<b & b-r>r)|(b+g>r & b+r>g & g+r>b & g-b<b & r>b & r-g<g & r>g)));
 temp = m;
-temp(notbrown) = 252;
-temp(notbrown+x*y/3) = 252;
-temp(notbrown+2*x*y/3) = 252;
+temp(countColor) = 252;
+temp(countColor+x*y/3) = 252;
+temp(countColor+2*x*y/3) = 252;
 figure
 imshow(temp);
+title('Other Bear');
+%% Pixels used vs. Actual
+countUsed = length(find((g>b & g>r & g-r>b)|(r>b & r>g & g-b<b & g-b<b & r-g-b>g)|(r>b & r>g & g>b & g-b<r-g & b+g<r & r-g>g)|(r>b & g>b & g-b>=r-g & r-g<r & g-b<r & r-b>b)|(g>r & b>r & g<b & g-r<b & b-r>r)|(b+g>r & b+r>g & g+r>b & g-b<b & r>b & r-g<g & r>g)));
+countObserved = greenCountPixels + redCountPixels + orangeCountPixels + yellowCountPixels + blueCountPixels + brownCountPixels;
+countDifference = countObserved - countUsed;
+
+
+%% Pictures
+figure
+imshow(GreenPic);
+d = ['title(''Green M&Ms: ',int2str(greenCount),' counted ',int2str(greenCount/155*100),' percent'');'];
+eval(d)
+
+figure
+imshow(RedPic);
+d = ['title(''Red M&Ms: ',int2str(redCount),' counted ',int2str(redCount/155*100),' percent'');'];
+eval(d)
+
+figure
+imshow(OrangePic);
+d = ['title(''Orange M&Ms: ',int2str(orangeCount),' counted ',int2str(orangeCount/155*100),' percent'');'];
+eval(d)
+
+figure
+imshow(YellowPic);
+title('Yellow Bear');
+d = ['title(''Green M&Ms: ',int2str(redCount),' counted ',int2str(redCount/155*100),' percent'');'];
+eval(d)
+
+figure
+imshow(BluePic);
+title('Blue Bear');
+d = ['title(''Blue M&Ms: ',int2str(blueCount),' counted ',int2str(blueCount/155*100),' percent'');'];
+eval(d)
+
+figure
+imshow(BrownPic);
 title('Brown Bear');
+d = ['title(''Brown M&Ms: ',int2str(brownCount),' counted ',int2str(brownCount/155*100),' percent'');'];
+eval(d)
