@@ -1,0 +1,204 @@
+%% ECE 2409-002
+%% Final Project
+%% Mark Willis & Vasilios Seitaridis
+
+Published = datestr(now, 21)
+clc; clear; close all;
+%% Part 1
+m=imread('FinalProjectPicture.jpg');
+imshow(m)
+
+green=m(383:429,81:135,:);
+r=green(:,:,1);
+g=green(:,:,2);
+b=green(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Green')
+
+hold
+red=m(501:543,1065:1108,:);
+r=red(:,:,1);
+g=red(:,:,2);
+b=red(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Red')
+
+hold
+orange=m(734:782,174:225,:);
+r=orange(:,:,1);
+g=orange(:,:,2);
+b=orange(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Orange')
+
+hold
+yellow=m(633:678,939:991,:);
+r=yellow(:,:,1);
+g=yellow(:,:,2);
+b=yellow(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Yellow')
+
+hold
+blue=m(809:861,927:978,:);
+r=blue(:,:,1);
+g=blue(:,:,2);
+b=blue(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Blue')
+
+hold
+brown=m(573:615,346:390,:);
+r=brown(:,:,1);
+g=brown(:,:,2);
+b=brown(:,:,3);
+
+figure
+histogram(r,'facecolor','r')
+hold
+histogram(g,'facecolor','g')
+histogram(b,'facecolor','b')
+set(gca,'fontsize',12)
+title('Brown')
+%% Part 3
+
+% Put rules in the title of histogram plot
+
+red=m(:,:,1);
+green=m(:,:,2);
+blue=m(:,:,3);
+
+    %%Blue
+    i = ~((red<green)&(red<blue)&(green<blue)&(green-red<blue)&(blue-red>red));
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(8)
+    imshow(mnew)
+    title('Blue')
+
+    %%Green
+    i = ~((green>blue)&(green>red)&(green-red>blue));
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(9)
+    imshow(mnew)
+    title('Green')
+
+    %%Red
+    i = ~((red>blue)&(red>green)&(red-green>green)&(green-blue<blue)&(red-green-blue>green));
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(10)
+    imshow(mnew)
+    title('Red')
+
+    %%Yellow
+    i = ~((blue<green)&(blue<red)&(green-blue<red)&(red-green<green)&(red-blue>blue)&(green-blue>=red-green));
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(11)
+    imshow(mnew)
+    title('Yellow')
+    
+    %%Orange
+    i = ~((red>blue)&(green-blue>blue)&(red-green>green)); %&(red>green+blue)
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(12)
+    imshow(mnew)
+    title('Orange')
+    
+    %%Brown
+    i = ~((blue+green>red)&(blue+red>green)&(green+red>blue)&(green-blue<blue)&(red>blue)&(red-green<green)&(red>green));
+    rclear = m(:,:,1);
+    gclear = m(:,:,2);
+    bclear = m(:,:,3);
+    rclear(i)=255;
+    gclear(i)=255;
+    bclear(i)=255;
+    mnew(:,:,1) = rclear;
+    mnew(:,:,2) = gclear;
+    mnew(:,:,3) = bclear;
+    figure(13)
+    imshow(mnew)
+    title('Brown')
+%% Counts
+% Blue: 144
+% Green: 155
+% Red: 90
+% Yellow: 147
+% Orange: 114
+% Brown: 113
+
+bluePixelCount = sum(sum((red<green)&(red<blue)&(green<blue)&(green-red<blue)&(blue-red>red)));
+greenPixelCount = sum(sum((green>blue)&(green>red)&(green-red>blue)));
+redPixelCount = sum(sum((red>blue)&(red>green)&(red-green>green)&(green-blue<blue)&(red-green-blue>green)));
+yellowPixelCount = sum(sum((blue<green)&(blue<red)&(green-blue<red)&(red-green<green)&(red-blue>blue)&(green-blue>=red-green)));
+orangePixelCount = sum(sum((red>blue)&(green-blue>blue)&(red-green>green)));
+brownPixelCount = sum(sum((blue+green>red)&(blue+red>green)&(green+red>blue)&(green-blue<blue)&(red>blue)&(red-green<green)&(red>green)));
+brownPixelCount/1851
