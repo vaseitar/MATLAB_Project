@@ -27,7 +27,7 @@ title('Green');
 
 
 
-red=m(501:543,1065:1108,:);
+red=m(504:543,1068:1108,:);
 r=red(:,:,1);
 g=red(:,:,2);
 b=red(:,:,3);
@@ -103,7 +103,7 @@ title('blue');
 
 
 
-brown=m(573:615,346:390,:);
+brown=m(528:560,504:549,:);
 r=brown(:,:,1);
 g=brown(:,:,2);
 b=brown(:,:,3);
@@ -137,7 +137,7 @@ imshow(temp);
 title('Green Bear');
 
 % find and remove what isn't red
-notred = find(not(r>b & r>g & g-b<r-g));
+notred = find(not(r>b & r>g & g-b<b & g<=b & g+b<r));
 temp = m;
 temp(notred) = 252;
 temp(notred+x*y/3) = 252;
@@ -147,7 +147,7 @@ imshow(temp);
 title('Red Bear');
 
 % find and remove what isn't orange
-notorange = find(not(r>b & r>g & g-b<r-g));
+notorange = find(not(r>b & r>g & g>b & g-b<r-g & b+g<r & r-g>g));
 temp = m;
 temp(notorange) = 252;
 temp(notorange+x*y/3) = 252;
@@ -177,7 +177,7 @@ imshow(temp);
 title('Blue Bear');
 
 % find and remove what isn't brown
-notbrown = find(not(r>b & r>g & g-b>r-g));
+notbrown = find(not(r>b & r>g & g-b<b));
 temp = m;
 temp(notbrown) = 252;
 temp(notbrown+x*y/3) = 252;
